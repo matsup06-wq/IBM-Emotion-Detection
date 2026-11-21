@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detection</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f3f6fc; color: #202a44; }
+        main { max-width: 650px; margin: 80px auto; padding: 32px; background: white; border-radius: 14px; box-shadow: 0 8px 30px #dce3f0; }
+        textarea { width: 100%; min-height: 110px; padding: 10px; box-sizing: border-box; font: inherit; }
+        button { background: #0f62fe; border: 0; border-radius: 6px; padding: 12px 20px; color: white; cursor: pointer; margin-top: 12px; }
+        #result { white-space: pre-wrap; margin-top: 24px; }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Emotion Detection</h1>
+    <p>Enter an English sentence to analyze its emotions using IBM Watson NLP.</p>
+    <label for="textToAnalyze">Text to analyze</label>
+    <textarea id="textToAnalyze" placeholder="I am very happy today"></textarea>
+    <button type="button" onclick="analyzeText()">Analyze emotions</button>
+    <div id="result" role="status"></div>
+</main>
+<script>
+    async function analyzeText() {
+        const text = document.getElementById('textToAnalyze').value;
+        const result = document.getElementById('result');
+        result.textContent = 'Analyzing...';
+        try {
+            const response = await fetch('/emotionDetector?textToAnalyze=' + encodeURIComponent(text));
+            result.textContent = await response.text();
+        } catch (error) {
+            result.textContent = 'Unable to connect to emotion detection server.';
+        }
+    }
+</script>
+</body>
+</html>
